@@ -1,15 +1,23 @@
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
+import MatterConfig from "./Ele";
 
-const canvasWidth = 600;
-const canvasHeight = 600;
+const {
+  pill, 
+  floor, 
+  floorLeft,
+  floorRight,
+  floorTop, 
+  canvasWidth, 
+  canvasHeight 
+} = MatterConfig;
 
 export default function App() {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
 
     useEffect(() => {
-        const { Engine, Render, World, Bodies, Runner, Body } = Matter;
+        const { Engine, Render, World, Runner, Body } = Matter;
 
         const engine = Engine.create();
         engine.gravity.y = 0.5;
@@ -48,46 +56,7 @@ export default function App() {
           }
         });
         
-        const pill = Bodies.rectangle(
-            300, 100, 50, 100, {
-                chamfer: {
-                    radius: [25, 25] // 둥근 모서리 설정
-                },
-                render: {
-                    fillStyle: "#ffffff" // 물체의 배경 색상 설정
-                },
-                restitution: 0.6 // 튕기는 정도 설정
-            }
-        );
-
-        const floor = Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 100, {
-          isStatic: true,
-          render: {
-            fillStyle: "#121212",
-          },
-        });
         
-        const floorLeft = Bodies.rectangle(0, canvasHeight / 2, 100, canvasHeight, {
-          isStatic: true,
-          render: {
-            fillStyle: "#121212",
-          },
-        });
-        
-        const floorRight = Bodies.rectangle(canvasWidth, canvasHeight / 2, 100, canvasHeight, {
-          isStatic: true,
-          render: {
-            fillStyle: "#121212",
-          },
-        });
-        
-        const floorTop = Bodies.rectangle(canvasWidth / 2, -10, canvasWidth, 50, {
-          isStatic: true,
-          render: {
-            fillStyle: "#121212",
-          },
-        });
-
         World.add(engine.world, [pill, floor, floorLeft, floorRight, floorTop, mouseConstraint]);
 
         const runner = Runner.create();
